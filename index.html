@@ -1,43 +1,38 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AliExpress - عروض حصرية!</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f12c2c;
+      font-family: Tahoma, sans-serif;
+      background: #ff3c3c;
       color: #fff;
       text-align: center;
       direction: rtl;
     }
     .container {
-      padding: 20px;
-      margin: auto;
-      max-width: 400px;
+      padding: 30px 20px;
+      margin-top: 50px;
     }
     img {
-      width: 120px;
+      width: 100px;
       border-radius: 20px;
-      margin: 20px auto;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px #000;
     }
     h1 {
-      font-size: 22px;
+      font-size: 24px;
+      margin-bottom: 10px;
     }
     p {
       font-size: 16px;
-      margin: 10px 0;
+      margin-bottom: 20px;
     }
-    .countdown {
-      font-size: 30px;
-      font-weight: bold;
-      margin: 15px 0;
-    }
-    .btn {
-      background-color: #ffd700;
+    button {
+      background: #ffd700;
       color: #000;
       padding: 15px 30px;
       border: none;
@@ -46,76 +41,41 @@
       cursor: pointer;
       animation: pulse 2s infinite;
     }
-    .btn:hover {
-      animation: shake 0.4s;
-    }
     @keyframes pulse {
       0%, 100% {transform: scale(1);}
       50% {transform: scale(1.05);}
     }
-    @keyframes shake {
-      0%, 100% {transform: translateX(0);}
-      25% {transform: translateX(-5px);}
-      75% {transform: translateX(5px);}
-    }
-    .notif {
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-      background: rgba(0,0,0,0.7);
-      padding: 10px 15px;
-      border-radius: 10px;
-      font-size: 14px;
-      animation: fadein 1s, fadeout 1s 4s;
-      color: #fff;
-    }
-    @keyframes fadein {from{opacity:0} to{opacity:1}}
-    @keyframes fadeout {from{opacity:1} to{opacity:0}}
   </style>
 </head>
 <body>
 
   <div class="container">
     <img src="https://play-lh.googleusercontent.com/ZoUDHSl08UuXnAyQbD4AZmNbn28FVpqS9AYwnW6u9q1Dp4ykXWLaT8KvFvZwPBbhTA=s180-rw" alt="AliExpress">
-    <h1>🎁 احصل على عروض حصرية من AliExpress الآن!</h1>
-    <p>قم بتحميل التطبيق واستفد من التخفيضات الرائعة 🔥<br>Profitez des meilleures offres en téléchargeant l'application</p>
-    <div class="countdown" id="countdown">05</div>
-    <button class="btn" onclick="claim()">📲 حمّل التطبيق الآن</button>
+    <h1>🎁 عروض AliExpress متوفرة الآن!</h1>
+    <p>إضغط لتحميل التطبيق مباشرة أو فتحه إن كان مثبتًا</p>
+    <button onclick="openApp()">📲 فتح AliExpress الآن</button>
   </div>
 
-  <audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-4.mp3" preload="auto"></audio>
-  <div class="notif" id="notif" style="display:none;"></div>
-
   <script>
-    // عداد تنازلي
-    let seconds = 5;
-    const countdownEl = document.getElementById("countdown");
-    const timer = setInterval(() => {
-      seconds--;
-      countdownEl.textContent = seconds < 10 ? "0" + seconds : seconds;
-      if (seconds <= 0) clearInterval(timer);
-    }, 1000);
+    function openApp() {
+      const isAndroid = /android/i.test(navigator.userAgent);
+      const myLeadLink = "https://wait-page.eu/a/NM9gUjjNJi4qAK"; // رابطك من MyLead
+      const aliIntent = "intent://aliexpress.com/#Intent;scheme=https;package=com.alibaba.aliexpresshd;end";
 
-    // زر التحميل
-    function claim() {
-      document.getElementById("clickSound").play();
-      setTimeout(() => {
-        window.location.href = "https://wait-page.eu/a/NM9gUjjNJi4qAK";
-      }, 800);
+      if (isAndroid) {
+        // نحاول فتح التطبيق عبر intent
+        window.location = aliIntent;
+
+        // إذا لم ينجح خلال ثانيتين، نوجه إلى MyLead
+        setTimeout(() => {
+          window.location.href = myLeadLink;
+        }, 2000);
+      } else {
+        // iOS أو كمبيوتر: نوجه مباشرة لرابط MyLead
+        window.location.href = myLeadLink;
+      }
     }
-
-    // إشعارات وهمية
-    const names = ["ليلى من سوسة", "سامي من نابل", "محمد من تونس", "أمينة من صفاقس"];
-    const notifEl = document.getElementById("notif");
-
-    function showNotif() {
-      const name = names[Math.floor(Math.random() * names.length)];
-      notifEl.textContent = name + " قام بتحميل التطبيق قبل قليل!";
-      notifEl.style.display = "block";
-      setTimeout(() => { notifEl.style.display = "none"; }, 5000);
-    }
-
-    setInterval(showNotif, 8000); // كل 8 ثواني
   </script>
+
 </body>
 </html>
